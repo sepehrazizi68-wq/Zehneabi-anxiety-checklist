@@ -155,7 +155,7 @@
 
     const note = document.createElement("p");
     note.className = "result-note";
-    note.textContent = "نتیجه شما برای کارشناس ارسال شد.";
+    note.textContent = "نتیجه شما ثبت شد.";
 
     card.appendChild(scoreEl);
     card.appendChild(levelEl);
