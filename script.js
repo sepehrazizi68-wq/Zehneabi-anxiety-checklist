@@ -129,13 +129,7 @@
     const payload = { score: score, level: range.level };
     TG.sendData(payload);
 
-    // Small confirmation moment before the WebApp closes, in case
-    // sendData/close take a moment on slower devices.
-    renderResultCard(score, range);
-
-    setTimeout(() => {
-      TG.close();
-    }, 600);
+     renderResultCard(score, range);
   }
 
   function renderResultCard(score, range) {
@@ -147,7 +141,8 @@
 
     const scoreEl = document.createElement("p");
     scoreEl.className = "score";
-    scoreEl.textContent = toPersianDigits(score) + " / " + toPersianDigits(CONFIG.questions.length);
+    scoreEl.textContent =
+        toPersianDigits(score) + " / " + toPersianDigits(CONFIG.questions.length);
 
     const levelEl = document.createElement("p");
     levelEl.className = "level-label";
@@ -157,13 +152,23 @@
     note.className = "result-note";
     note.textContent = "نتیجه شما ثبت شد.";
 
+    const button = document.createElement("button");
+    button.className = "btn btn-primary";
+    button.type = "button";
+    button.textContent = "ادامه";
+
+    button.addEventListener("click", () => {
+        TG.close();
+    });
+
     card.appendChild(scoreEl);
     card.appendChild(levelEl);
     card.appendChild(note);
+    card.appendChild(button);
+
     overlay.appendChild(card);
     document.body.appendChild(overlay);
-  }
-
+}
   function bindFooterActions() {
     el.resetBtn.addEventListener("click", resetAll);
     el.resultBtn.addEventListener("click", showResult);
