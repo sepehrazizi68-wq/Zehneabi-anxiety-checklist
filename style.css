@@ -1,7 +1,26 @@
 /* style.css — ذهن آبی Mini App
    Performance-first: no animation, no blur, no web fonts, no heavy shadows.
 */
+@font-face {
+    font-family: 'Vazirmatn';
+    src: url('Vazirmatn-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
 
+@font-face {
+    font-family: 'Vazirmatn';
+    src: url('Vazirmatn-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Vazirmatn';
+    src: url('Vazirmatn-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
 :root {
   --primary: #003E9B;
   --secondary: #0072D8;
@@ -25,7 +44,7 @@ html, body {
 }
 
 body {
-  font-family: "IRANSansX", "IRANSans", "Vazirmatn", Tahoma, sans-serif;
+  font-family: "Vazirmatn" , "IRANSansX", "IRANSans" , Tahoma, sans-serif;
   color: var(--text-navy);
   background: #EAF4F7;
   -webkit-text-size-adjust: 100%;
