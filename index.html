@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ذهن آبی — چک‌لیست</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+<div class="bg-layer" aria-hidden="true">
+  <img src="ocean-bg.svg" alt="" class="bg-svg">
+</div>
+
+<div class="app">
+
+  <header class="app-header">
+    <img src="logo.png" alt="ذهن آبی" class="logo">
+    <div class="header-text">
+      <h1 id="title">چک‌لیست</h1>
+      <p id="subtitle">در حال بارگذاری...</p>
+    </div>
+  </header>
+
+  <main class="checklist-wrap">
+    <ul id="checklist" class="checklist" role="list"></ul>
+  </main>
+
+  <footer class="app-footer">
+    <p id="counter" class="counter">۰ مورد از ۰ نشانه انتخاب شده است</p>
+    <div class="footer-buttons">
+      <button id="resetBtn" class="btn btn-ghost" type="button">شروع دوباره</button>
+      <button id="resultBtn" class="btn btn-primary" type="button">مشاهده نتیجه</button>
+    </div>
+  </footer>
+
+</div>
+
+<script src="telegram.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
