@@ -128,7 +128,7 @@
 
     const payload = { score: score, level: range.level };
     TG.sendData(payload);
-
+TG.sendData(JSON.stringify(payload));
      renderResultCard(score, range);
   }
 
