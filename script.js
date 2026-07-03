@@ -126,10 +126,10 @@
     const score = getCount();
     const range = getScoreRange(score);
     const payload = { score: score, level: range.level };
-     renderResultCard(score, range);
+    renderResultCard(score, range, payload);
   }
 
-  function renderResultCard(score, range) {
+  function renderResultCard(score, range, payload) {
     const overlay = document.createElement("div");
     overlay.className = "result-overlay";
 
@@ -155,7 +155,9 @@
     button.textContent = "ادامه";
 
     button.addEventListener("click", () => {
-        TG.close();
+        // sendData() closes the Mini App automatically once the bot
+        // receives it, so there's no separate TG.close() call here.
+        TG.sendData(payload);
     });
 
     card.appendChild(scoreEl);
