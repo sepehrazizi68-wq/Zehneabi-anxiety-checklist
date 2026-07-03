@@ -125,10 +125,7 @@
   function showResult() {
     const score = getCount();
     const range = getScoreRange(score);
-
     const payload = { score: score, level: range.level };
-    TG.sendData(payload);
-TG.sendData(JSON.stringify(payload));
      renderResultCard(score, range);
   }
 
