@@ -155,9 +155,15 @@
     button.textContent = "ادامه";
 
     button.addEventListener("click", () => {
-        // sendData() closes the Mini App automatically once the bot
-        // receives it, so there's no separate TG.close() call here.
-        TG.sendData(payload);
+        button.disabled = true;
+        TG.submitScore(CONFIG.meta.scoreApiUrl, payload).then((ok) => {
+            if (ok) {
+                TG.close();
+            } else {
+                button.disabled = false;
+                note.textContent = "ثبت نتیجه با خطا مواجه شد. لطفاً دوباره تلاش کنید.";
+            }
+        });
     });
 
     card.appendChild(scoreEl);

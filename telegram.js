@@ -17,14 +17,30 @@ const TG = (function () {
     }
   }
 
-  function sendData(payload) {
-    const json = JSON.stringify(payload);
-    if (native && native.sendData) {
-      native.sendData(json);
-    } else {
+  /**
+   * Sends the score to the bot ourselves via a plain HTTP POST, rather than
+   * Telegram's own WebApp.sendData(). The launch button is an inline
+   * "web_app" button, and Telegram only delivers sendData() as a
+   * web_app_data update for Mini Apps launched via a reply-keyboard button
+   * or the Menu Button — inline-launched apps can't use it at all. initData
+   * is included so the bot can verify this really came from Telegram.
+   */
+  function submitScore(apiUrl, payload) {
+    if (!native) {
       // Outside Telegram: log so it's visible during local/browser testing.
-      console.log("[telegram.js] sendData (no Telegram context):", json);
+      console.log("[telegram.js] submitScore (no Telegram context):", JSON.stringify(payload));
+      return Promise.resolve(true);
     }
+    return fetch(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ initData: native.initData, score: payload.score }),
+    })
+      .then((res) => res.ok)
+      .catch((err) => {
+        console.error("[telegram.js] submitScore failed:", err);
+        return false;
+      });
   }
 
   function close() {
@@ -37,5 +53,5 @@ const TG = (function () {
     return !!native;
   }
 
-  return { ready, sendData, close, isInTelegram };
+  return { ready, submitScore, close, isInTelegram };
 })();

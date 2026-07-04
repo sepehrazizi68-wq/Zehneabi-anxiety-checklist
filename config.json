@@ -1,7 +1,8 @@
 {
   "meta": {
     "checklistId": "anxiety",
-    "clinicName": "ذهن آبی"
+    "clinicName": "ذهن آبی",
+    "scoreApiUrl": "https://celtic-instructions-yesterday-mirrors.trycloudflare.com/checklist-score"
   },
   "header": {
     "title": "چک‌لیست اضطراب",
