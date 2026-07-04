@@ -43,6 +43,37 @@ const TG = (function () {
       });
   }
 
+  /**
+   * Asks the bot whether this user already has a recorded checklist score,
+   * so the page can show that result directly on reopen instead of a
+   * blank checklist. Fails open (treated as "not completed") outside
+   * Telegram or on any network error — worst case is a fresh checklist,
+   * never a stuck page.
+   */
+  function checkStatus(apiUrl) {
+    if (!native) {
+      return Promise.resolve({ completed: false });
+    }
+    const url = apiUrl + '?initData=' + encodeURIComponent(native.initData);
+    return fetch(url)
+      .then((res) => (res.ok ? res.json() : { completed: false }))
+      .catch((err) => {
+        console.error("[telegram.js] checkStatus failed:", err);
+        return { completed: false };
+      });
+  }
+
+  /** Native popup, the Mini App equivalent of a callback query's
+   * answerCallbackQuery(show_alert) popup — there's no chat-message
+   * round trip involved, it's purely a client-side call. */
+  function showAlert(message) {
+    if (native && native.showAlert) {
+      native.showAlert(message);
+    } else {
+      console.log("[telegram.js] showAlert (no Telegram context):", message);
+    }
+  }
+
   function close() {
     if (native && native.close) {
       native.close();
@@ -53,5 +84,5 @@ const TG = (function () {
     return !!native;
   }
 
-  return { ready, submitScore, close, isInTelegram };
+  return { ready, submitScore, checkStatus, showAlert, close, isInTelegram };
 })();

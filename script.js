@@ -8,6 +8,11 @@
 
   let CONFIG = null;
   const state = { checked: [] };
+  // Once the on-load status check finds an already-recorded score, every
+  // result shown for the rest of this page load is local-only — no more
+  // POSTs to the bot, whether from the original score or from redoing the
+  // checklist afterward (see checkStatus() in init() and showResult()).
+  let isReplayMode = false;
 
   const el = {
     title: document.getElementById("title"),
@@ -125,11 +130,10 @@
   function showResult() {
     const score = getCount();
     const range = getScoreRange(score);
-    const payload = { score: score, level: range.level };
-    renderResultCard(score, range, payload);
+    renderResultCard(score, range, isReplayMode ? "replay" : "submit");
   }
 
-  function renderResultCard(score, range, payload) {
+  function renderResultCard(score, range, mode) {
     const overlay = document.createElement("div");
     overlay.className = "result-overlay";
 
@@ -147,29 +151,50 @@
 
     const note = document.createElement("p");
     note.className = "result-note";
-    note.textContent = "نتیجه شما ثبت شد.";
+    note.textContent = mode === "replay" ? CONFIG.messages.resultPrevious : CONFIG.messages.resultSaved;
+
+    const retakeButton = document.createElement("button");
+    retakeButton.className = "btn btn-ghost";
+    retakeButton.type = "button";
+    retakeButton.textContent = CONFIG.footer.retakeButton;
+    retakeButton.addEventListener("click", () => {
+        overlay.remove();
+    });
 
     const button = document.createElement("button");
     button.className = "btn btn-primary";
     button.type = "button";
     button.textContent = "ادامه";
 
-    button.addEventListener("click", () => {
-        button.disabled = true;
-        TG.submitScore(CONFIG.meta.scoreApiUrl, payload).then((ok) => {
-            if (ok) {
-                TG.close();
-            } else {
-                button.disabled = false;
-                note.textContent = "ثبت نتیجه با خطا مواجه شد. لطفاً دوباره تلاش کنید.";
-            }
+    if (mode === "replay") {
+        // Already recorded — this is just her looking at it again, not a
+        // fresh submission, so continuing never talks to the bot.
+        button.addEventListener("click", () => {
+            TG.close();
         });
-    });
+    } else {
+        button.addEventListener("click", () => {
+            button.disabled = true;
+            TG.submitScore(CONFIG.meta.scoreApiUrl, { score: score }).then((ok) => {
+                if (ok) {
+                    TG.close();
+                } else {
+                    button.disabled = false;
+                    note.textContent = CONFIG.messages.submitError;
+                }
+            });
+        });
+    }
+
+    const buttonRow = document.createElement("div");
+    buttonRow.className = "result-card-buttons";
+    buttonRow.appendChild(retakeButton);
+    buttonRow.appendChild(button);
 
     card.appendChild(scoreEl);
     card.appendChild(levelEl);
     card.appendChild(note);
-    card.appendChild(button);
+    card.appendChild(buttonRow);
 
     overlay.appendChild(card);
     document.body.appendChild(overlay);
@@ -190,6 +215,14 @@
         renderFooter();
         updateCounter();
         bindFooterActions();
+        return TG.checkStatus(CONFIG.meta.statusApiUrl);
+      })
+      .then((status) => {
+        if (status && status.completed) {
+          isReplayMode = true;
+          TG.showAlert(CONFIG.messages.alreadyDone);
+          renderResultCard(status.score, getScoreRange(status.score), "replay");
+        }
       })
       .catch((err) => {
         el.subtitle.textContent = "خطا در بارگذاری اطلاعات. لطفاً دوباره تلاش کنید.";

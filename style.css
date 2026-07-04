@@ -295,8 +295,10 @@ body {
   margin: 0 0 20px;
 }
 
-.result-card .btn {
-  width: 100%;
+.result-card-buttons {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 10px;
 }
 
 /* ---------- Small screens ---------- */

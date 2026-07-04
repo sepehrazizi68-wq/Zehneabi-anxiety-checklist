@@ -2,7 +2,8 @@
   "meta": {
     "checklistId": "anxiety",
     "clinicName": "ذهن آبی",
-    "scoreApiUrl": "https://celtic-instructions-yesterday-mirrors.trycloudflare.com/checklist-score"
+    "scoreApiUrl": "https://celtic-instructions-yesterday-mirrors.trycloudflare.com/checklist-score",
+    "statusApiUrl": "https://celtic-instructions-yesterday-mirrors.trycloudflare.com/checklist-status"
   },
   "header": {
     "title": "چک‌لیست اضطراب",
@@ -23,7 +24,14 @@
   "footer": {
     "counterTemplate": "{count} مورد از {total} نشانه انتخاب شده است",
     "resetButton": "شروع دوباره",
-    "resultButton": "مشاهده نتیجه"
+    "resultButton": "مشاهده نتیجه",
+    "retakeButton": "انجام دوباره تست"
+  },
+  "messages": {
+    "alreadyDone": "شما قبلاً این چک‌لیست را تکمیل کرده‌اید.",
+    "resultSaved": "نتیجه شما ثبت شد.",
+    "resultPrevious": "این نتیجه، ثبت قبلی شماست.",
+    "submitError": "ثبت نتیجه با خطا مواجه شد. لطفاً دوباره تلاش کنید."
   },
   "scoring": {
     "ranges": [
