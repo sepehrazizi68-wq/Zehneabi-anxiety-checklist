@@ -61,7 +61,7 @@
 
       const text = document.createElement("span");
       text.className = "q-text";
-      text.textContent = qText;
+      text.textContent = toPersianDigits(i + 1) + ". " + qText;
 
       const box = document.createElement("span");
       box.className = "q-check";
